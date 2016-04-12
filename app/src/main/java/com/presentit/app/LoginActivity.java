@@ -3,6 +3,7 @@ package com.presentit.app;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentActivity;
@@ -56,24 +57,31 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         // Scopes.PLUS_LOGIN scope to the GoogleSignInOptions to see the
         // difference.
         SignInButton signInButton = (SignInButton) findViewById(R.id.sign_in_button);
-        signInButton.setSize(SignInButton.SIZE_STANDARD);
-        signInButton.setScopes(gso.getScopeArray());
+        if (signInButton != null) {
+            signInButton.setSize(SignInButton.SIZE_STANDARD);
 
-        signInButton.setOnClickListener(new OnClickListener() {
 
-            @Override
-            public void onClick(View v) {
-                switch (v.getId()) {
-                    case R.id.sign_in_button:
-                        signIn();
-                        break;
-                    // ...
+            signInButton.setScopes(gso.getScopeArray());
+
+
+            signInButton.setOnClickListener(new OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    switch (v.getId()) {
+                        case R.id.sign_in_button:
+                            signIn();
+                            break;
+                        // ...
+                    }
                 }
-            }
-        });
-       textResponseMsg = (TextView) findViewById(R.id.txtResponseMsg);
-        Log.d("message", textResponseMsg.getText().toString());
-       //textResponseMsg.setLayoutParams(new ViewGroup.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
+            });
+        }
+        textResponseMsg = (TextView) findViewById(R.id.txtResponseMsg);
+        if (textResponseMsg != null) {
+            Log.d("message", textResponseMsg.getText().toString());
+        }
+        //textResponseMsg.setLayoutParams(new ViewGroup.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
     }
 
     private void signIn() {
@@ -119,7 +127,9 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         if (result.isSuccess()) {
             // Signed in successfully, show authenticated UI.
             GoogleSignInAccount acct = result.getSignInAccount();
-            Log.d("STATE", "Unauthenticated UI" + acct.getDisplayName());
+            if (acct != null) {
+                Log.d("STATE", "Authenticated Username:" + acct.getDisplayName());
+            }
             //Uri uri = acct.getPhotoUrl();
             //textResponseMsg.setText("Successfully authenticated " + acct.getDisplayName());
             Intent intent = new Intent(this, WelcomeActivity.class);
@@ -139,7 +149,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
 
     @Override
-    public void onConnectionFailed(ConnectionResult connectionResult) {
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
     }
 }
