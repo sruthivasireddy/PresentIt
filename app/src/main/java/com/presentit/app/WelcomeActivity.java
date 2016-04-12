@@ -50,7 +50,7 @@ public class WelcomeActivity extends AppCompatActivity {
         Intent intent = getIntent();
         user = intent.getExtras().getParcelable("USER_INFO");
         TextView tvUserDetails = (TextView) findViewById(R.id.txtUserDetails);
-        Log.d("STATE", "Authenticated User Display name:" + user.getDisplayName());
+        Log.d("STATE", "Authenticated User Display Name:" + user.getDisplayName());
         if (tvUserDetails != null) {
             tvUserDetails.setText(user.getDisplayName());
         }
