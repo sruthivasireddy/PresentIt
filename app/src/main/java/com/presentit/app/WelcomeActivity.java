@@ -62,8 +62,11 @@ public class WelcomeActivity extends AppCompatActivity {
             new loadImage().execute(url);
         }
 
-        mDrawerList = (ListView)findViewById(R.id.navList);
         mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
+        mDrawerList = (ListView)findViewById(R.id.navList);
+        if(mDrawerList==null)
+            Log.d("ERROR", null);
+
         mActivityTitle = user.getDisplayName();
 
         addDrawerItems();
@@ -72,7 +75,7 @@ public class WelcomeActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
 
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+       // mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         getSupportActionBar().setTitle(mActivityTitle);
 
         // final Bitmap bitmap=null;
@@ -89,15 +92,14 @@ public class WelcomeActivity extends AppCompatActivity {
 
     private void addDrawerItems() {
         String[] menuArray = { "Profile", "Courses", "Classrooms" };
-        mAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, menuArray);
+        mAdapter = new ArrayAdapter<>(this,R.layout.drawer_listview_item , menuArray);
         mDrawerList.setAdapter(mAdapter);
 
-        mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(WelcomeActivity.this, "Time for an upgrade!", Toast.LENGTH_SHORT).show();
-            }
-        });
+        /* TODO: why to add these 2 lines */
+        mDrawerList.bringToFront();
+        mDrawerLayout.requestLayout();
+
+        mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
     }
 
     private void setupDrawer() {
@@ -107,19 +109,19 @@ public class WelcomeActivity extends AppCompatActivity {
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
                 getSupportActionBar().setTitle("Options");
-                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
+                //invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
             }
 
             /** Called when a drawer has settled in a completely closed state. */
             public void onDrawerClosed(View view) {
                 super.onDrawerClosed(view);
                 getSupportActionBar().setTitle(user.getDisplayName());
-                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
+                //invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
             }
         };
 
         mDrawerToggle.setDrawerIndicatorEnabled(true);
-        mDrawerLayout.addDrawerListener(mDrawerToggle);
+        mDrawerLayout.setDrawerListener(mDrawerToggle);
     }
 
     @Override
@@ -159,6 +161,13 @@ public class WelcomeActivity extends AppCompatActivity {
 
     }
 
+    private class DrawerItemClickListener implements ListView.OnItemClickListener {
+        @Override
+        public void onItemClick(AdapterView parent, View view, int position, long id) {
+            Toast.makeText(WelcomeActivity.this, ((TextView)view).getText(), Toast.LENGTH_LONG).show();
+            //mDrawerLayout.closeDrawer(mDrawerList);
+        }
+    }
     public class loadImage extends AsyncTask<String, Void, Void> {
 
         @Override
