@@ -1,7 +1,9 @@
 package com.presentit.app;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -10,6 +12,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.util.Pair;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,6 +20,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -25,6 +29,13 @@ import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.api.client.extensions.android.http.AndroidHttp;
+import com.google.api.client.extensions.android.json.AndroidJsonFactory;
+import com.google.api.client.googleapis.services.AbstractGoogleClientRequest;
+import com.google.api.client.googleapis.services.GoogleClientRequestInitializer;
+import com.presentit.app.backend.myApi.MyApi;
+
+import java.io.IOException;
 
 public class LoginActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
 
@@ -134,6 +145,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             //textResponseMsg.setText("Successfully authenticated " + acct.getDisplayName());
             Intent intent = new Intent(this, WelcomeActivity.class);
             intent.putExtra("USER_INFO", acct);
+
             startActivity(intent);
 
             //mStatusTextView.setText(getString(R.string.signed_in_fmt, acct.getDisplayName()));
@@ -153,3 +165,4 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
     }
 }
+
